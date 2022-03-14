@@ -1,7 +1,7 @@
 
 from ast import Expression
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, status,views
 
 from cashlessapi.settings import SECRET_KEY
 from .serializers import RegisterSerializer
@@ -13,6 +13,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
 from django.conf import settings
+from .serializers import EmailVerificationSerializer
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 # Create your views here.
 
 class RegisterView(generics.GenericAPIView):
@@ -41,7 +44,13 @@ class RegisterView(generics.GenericAPIView):
         return Response(user_data,status=status.HTTP_201_CREATED)
 
 
-class verifyEmail(generics.GenericAPIView):
+class verifyEmail(views.APIView):
+    serializer_class=EmailVerificationSerializer
+
+
+
+    token_param_config=openapi.Parameter('token',in_=openapi.IN_QUERY,description='description',type=openapi.TYPE_STRING)
+    @swagger_auto_schema(manual_parameters=[token_param_config])
     def get(self,request):
         token=request.GET.get('token')
         try:
