@@ -1,10 +1,9 @@
 
-from ast import Expression
 from django.shortcuts import render
 from rest_framework import generics, status,views
 
 from cashlessapi.settings import SECRET_KEY
-from .serializers import RegisterSerializer
+from  .serializers import RegisterSerializer, EmailVerificationSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
@@ -13,7 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
 from django.conf import settings
-from .serializers import EmailVerificationSerializer
+
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 # Create your views here.
@@ -45,6 +44,8 @@ class RegisterView(generics.GenericAPIView):
 
 
 class verifyEmail(views.APIView):
+
+
     serializer_class=EmailVerificationSerializer
 
 
